@@ -1,0 +1,24 @@
+<nav>
+    <div class="navbar">
+        <div class="navbar-header">
+            <span class="navbar-logo">
+                Connect4
+            </span>
+<div class="navbar-user">
+    <div class="navbar-avatar">
+
+    </div>
+    <span>
+        user name
+    </span>
+</div>
+        </div>
+        <ul class="navbar-links">
+            @for (link of links; track $index) {
+                <li class="nav-link-wrapper">
+                    <a class="navbar-link" [routerLink]="link">{{ link }}</a>
+                </li>
+            }
+        </ul>
+    </div>
+    </nav>
