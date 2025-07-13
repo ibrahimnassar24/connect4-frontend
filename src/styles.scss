@@ -14,3 +14,13 @@ body {
     background-color: #f5f5f5;
     color: #333;
 }
+
+.hide-on-md{
+    display: inline-block;
+}
+
+@media screen and (max-width: 768px) {
+    .hide-on-md{
+    display: none;
+}
+}

@@ -9,7 +9,7 @@ const initialValue: Status = {
 export const statusReducer = createReducer(
     initialValue,
     on(
-        statusActions.navigateTo,
+        statusActions.navigateToHome,
         (state) => {
             const temp = {
                 ...state,
@@ -17,6 +17,73 @@ export const statusReducer = createReducer(
             };
             return temp;
         }),
+
+
+    on(
+        statusActions.navigateToRegister,
+        (state) => {
+            const temp = {
+                ...state,
+                isLoading: true
+            };
+            return temp;
+        }),
+
+
+    on(
+        statusActions.navigateToLogin,
+        (state) => {
+            const temp = {
+                ...state,
+                isLoading: true
+            };
+            return temp;
+        }),
+
+
+    on(
+        statusActions.navigateToProfileEdit,
+        (state) => {
+            const temp = {
+                ...state,
+                isLoading: true
+            };
+            return temp;
+        }),
+
+
+    on(
+        statusActions.navigateToProfileView,
+        (state) => {
+            const temp = {
+                ...state,
+                isLoading: true
+            };
+            return temp;
+        }),
+
+
+    on(
+        statusActions.navigateToNotifications,
+        (state) => {
+            const temp = {
+                ...state,
+                isLoading: true
+            };
+            return temp;
+        }),
+
+
+    on(
+        statusActions.navigateToPlay,
+        (state) => {
+            const temp = {
+                ...state,
+                isLoading: true
+            };
+            return temp;
+        }),
+
 
     on(
         statusActions.navigateSuccess,

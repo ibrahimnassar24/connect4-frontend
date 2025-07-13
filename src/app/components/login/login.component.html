@@ -1,0 +1,32 @@
+<mat-card class="container">
+    <div>
+        <mat-card-header class="title">
+            Log in
+        </mat-card-header>
+    </div>
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+            <mat-form-field appearance="fill" class="full-width">
+                <mat-label>Email</mat-label>
+                <input matInput formControlName="email" type="email">
+                <mat-error *ngIf="form.get('email')?.hasError('required')">Email is required</mat-error>
+                <mat-error *ngIf="form.get('email')?.hasError('email')">Invalid email</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="full-width">
+                <mat-label>Password</mat-label>
+                <input matInput formControlName="password" type="password">
+                <mat-error *ngIf="form.get('password')?.hasError('required')">Password is required</mat-error>
+            </mat-form-field>
+
+            <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid">Submit</button>
+        </form>
+
+    <button mat-stroked-button>log in with google</button>
+
+    <div>
+        <span>
+            new to the game?
+            <a (click)="onRegister()">Register</a>
+        </span>
+    </div>
+</mat-card>

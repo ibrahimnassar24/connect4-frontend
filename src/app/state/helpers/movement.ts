@@ -1,8 +1,9 @@
 
 interface Movement {
-    playerId: string; // ID of the player making the move
-    column: number; // Column where the move is made
-    timestamp: Date; // Timestamp of when the move was made
+    matchId: number;
+    player: string;
+    format: string;
+    column: number;
 };
 
 export default Movement;

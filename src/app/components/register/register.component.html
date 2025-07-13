@@ -1,0 +1,40 @@
+<mat-card class="container">
+  <div>
+    <mat-card-header class="title">
+      Register
+    </mat-card-header>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Email</mat-label>
+    <input matInput formControlName="email" type="email">
+    <mat-error *ngIf="form.get('email')?.hasError('required')">Email is required</mat-error>
+    <mat-error *ngIf="form.get('email')?.hasError('email')">Invalid email</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Password</mat-label>
+    <input matInput formControlName="password" type="password">
+    <mat-error *ngIf="form.get('password')?.hasError('required')">Password is required</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Confirm Password</mat-label>
+    <input matInput formControlName="confirmPassword" type="password">
+    <mat-error *ngIf="form.get('confirmPassword')?.hasError('required')">Confirmation is required</mat-error>
+    <mat-error *ngIf="form.errors && form.errors['mismatch']">Passwords do not match</mat-error>
+  </mat-form-field>
+
+  <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid">Submit</button>
+</form>
+<div>
+  <button mat-stroked-button>Register using Google</button>
+</div>
+
+<span>
+  already have an account?
+  <a (click)="onLogin()">Log in</a>
+</span>
+
+</mat-card>

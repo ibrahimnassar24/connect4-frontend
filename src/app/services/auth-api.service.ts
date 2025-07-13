@@ -35,6 +35,14 @@ export class AuthApiService {
 
   }
 
+checkLogin() {
+  return this.httpClient.get<{email: string}>(
+    this.url + "manage/info",
+    {withCredentials: true}
+
+  );
+}
+
   logout() {
     return this.httpClient.post(
       this.url + 'logout',

@@ -1,14 +1,11 @@
-import { createFeatureSelector, createSelector } from '@ngrx/store';
+import { createFeatureSelector, createSelector, State } from '@ngrx/store';
 import Profile from './profile.model';
 
 // Define the feature state for profile
 export const selectProfileState = createFeatureSelector<Profile>('profile');
 
 // Selector to get the profile ID
-export const selectProfileId = createSelector(
-    selectProfileState,
-    (state: Profile) => state.id
-);
+
 
 // Selector to get the first name of the profile
 export const selectFirstName = createSelector(
@@ -52,8 +49,7 @@ export const selectBio = createSelector(
     (state: Profile) => state.bio
 );
 
-// Selector to get the social links of the profile
-export const selectSocialLinks = createSelector(
+export const selectFullName = createSelector(
     selectProfileState,
-    (state: Profile) => state.socialLinks
+    (state) => state.firstName + " " + state.lastName
 );

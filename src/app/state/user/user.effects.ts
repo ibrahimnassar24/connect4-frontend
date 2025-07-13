@@ -1,9 +1,12 @@
 import { inject, Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { AuthApiService } from "../../services/auth-api.service";
-import * as userActions from "./user.actions";
-import { catchError, map, mergeMap } from "rxjs/operators";
+import { catchError, map, switchMap, mergeMap } from "rxjs/operators";
 import { Action } from "@ngrx/store";
+import * as userActions from "./user.actions";
+import * as profileactions from "../profile/profile.actions";
+import * as notificationActions from "../notification/notification.actions";
+import * as statusActions from '../status/status.actions';
 
 @Injectable()
 export class UserEffects {
@@ -12,12 +15,14 @@ export class UserEffects {
 
     register$ = createEffect(() => {
 
-        
         return this.actions$.pipe(
             ofType(userActions.register),
             mergeMap(action =>
                 this.authApiService.register(action).pipe(
-                    map(response => userActions.registerSuccess({ email: action.email })),
+                    switchMap(() => [
+                        userActions.registerSuccess({ email: action.email }),
+                        statusActions.navigateToProfileEdit()
+                    ]),
                     catchError(error => [userActions.authError({ error: error.message })])
                 )
             )
@@ -30,14 +35,30 @@ export class UserEffects {
 
         return this.actions$.pipe(
             ofType(userActions.logIn),
-            mergeMap(action =>
+            switchMap(action =>
                 this.authApiService.login(action).pipe(
-                    map(response => userActions.logInSuccess({ email: action.email })),
+                    switchMap(response => [
+                        userActions.logInSuccess({ email: action.email })
+                    ]),
                     catchError(error => [userActions.authError({ error: error.message })])
                 )
             )
         )
     });
+
+
+
+    loginSuccess$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(userActions.logInSuccess),
+            switchMap(({ email }) => [
+                profileactions.loadProfile({ email }),
+                notificationActions.listenForNotifications(),
+                // statusActions.navigateToHome()
+            ]),
+        )
+
+    );
 
 
 
@@ -47,7 +68,11 @@ export class UserEffects {
             ofType(userActions.logOut),
             mergeMap(() =>
                 this.authApiService.logout().pipe(
-                    map(() => userActions.logOutSuccess()),
+                    mergeMap(() => [
+                        profileactions.clearProfile(),
+                        statusActions.navigateToLogin(),
+                        userActions.logOutSuccess()
+                    ]),
                     catchError(error => [userActions.authError({ error: error.message })])
                 )
             )

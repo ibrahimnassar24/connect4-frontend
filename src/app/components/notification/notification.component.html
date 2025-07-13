@@ -1,0 +1,15 @@
+<div class="container">
+    <div class="message">
+        <p class="message-content">
+            {{ data.Message }}
+        </p>
+    </div>
+    <div class="actions">
+        <button mat-flat-button class="action-accept" (click)="onAccept()">
+            accept
+        </button>
+        <button mat-stroked-button class="action-decline" (click)="onDecline()">
+            decline
+        </button>
+    </div>
+</div>
