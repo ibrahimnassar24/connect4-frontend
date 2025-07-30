@@ -1,0 +1,60 @@
+.container {
+    max-width: 600px;
+    margin: 2rem auto;
+}
+
+.search-box-container{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.full-width{
+    width: 100%;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+}
+
+.card-content{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+
+.card-content:hover{
+    cursor: pointer;
+}
+
+ul{
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+}
+
+li{
+    height: 8vh;
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 2px;
+}
+
+.avatar-wrapper{
+    width: 7vh;
+    height: 7vh;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+img{
+    width: 7vh;
+    height: 7vh;
+    object-fit: cover;
+}

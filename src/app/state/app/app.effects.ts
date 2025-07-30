@@ -22,7 +22,7 @@ export class AppEffects {
             withLatestFrom(this.store),
             tap(([action, state]) => {
                 console.log(action.type)
-                console.log(state)
+                // console.log(state.status.currentLocation)
             })
         );
     }, { dispatch: false });
@@ -45,11 +45,15 @@ export class AppEffects {
             mergeMap(() =>
                 this.authApi.checkLogin().pipe(
                     switchMap(({ email }) => [
+                        statusActions.saveCurrentLocation(),
                         userActions.logInSuccess({ email }),
                     ]),
                     catchError(() => {
 
-                        return [statusActions.navigateToLogin()]
+                        return [
+                            statusActions.saveCurrentLocation(),
+                            statusActions.navigateToLogin()
+                        ]
                     })
                 )
             )

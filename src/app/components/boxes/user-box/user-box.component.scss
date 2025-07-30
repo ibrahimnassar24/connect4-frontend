@@ -1,0 +1,17 @@
+.navbar-user {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.navbar-user:hover{
+  cursor: pointer;
+}
+
+.navbar-avatar {
+  width: 8vh;
+  height: 8vh;
+  border-radius: 50%;
+  object-fit: cover;
+  overflow: hidden;
+}

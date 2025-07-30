@@ -16,24 +16,18 @@ import { Notification } from '../../state/notification/notification.model';
 })
 export class NotificationComponent {
   @Input() data!: Notification;
-  matchId: string = '';
 
   constructor(
     private store: Store
   ) {
   }
 
-  ngOnInit() {
-    this.matchId = this.data.Link;
+
+  onAccept(invitationId: string) {
+    this.store.dispatch(matchActions.acceptInvitation({ id: invitationId }))
   }
 
-  onAccept() {
-    const id = this.matchId;
-    this.store.dispatch(matchActions.acceptInvitation({ id }))
-  }
-
-  onDecline() {
-    const id = this.matchId;
-    this.store.dispatch(matchActions.declineInvitation({ id }))
+  onDecline(invitationId: string) {
+    this.store.dispatch(matchActions.declineInvitation({ id: invitationId }))
   }
 }

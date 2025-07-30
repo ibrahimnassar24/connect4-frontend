@@ -1,0 +1,18 @@
+<h2 mat-dialog-title>Crop Image</h2>
+<mat-dialog-content>
+  <div class="container">
+  <image-cropper
+    [imageChangedEvent]="imageChangedEvent"
+    format="png"
+    (imageCropped)="imageCropped($event)"
+    (loadImageFailed)="onLoadImageFailed()">
+  </image-cropper>
+<div class="preview">
+  <img *ngIf="croppedImageUrl" [src]="croppedImageUrl" />
+</div>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button mat-raised-button color="primary" (click)="onCrop()">Crop & Save</button>
+</mat-dialog-actions>

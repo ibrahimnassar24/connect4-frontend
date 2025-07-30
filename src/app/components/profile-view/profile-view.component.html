@@ -1,22 +1,27 @@
-<div class="profile-container">
+<div class="container">
   <div class="profile-header">
-    <img class="profile-banner" src="profile-banner.jpg" alt="Profile Banner" />
-    <div class="profile-avatar-wrapper">
-      <img class="profile-avatar" src="user-avatar.png" alt="User Avatar" />
-    </div>
+    <img class="profile-banner" [src]="coverUrl | async" alt="Profile Banner" />
+    <span class="edit-button-wrapper">
+      <app-choose-photo-button imageType="cover"></app-choose-photo-button>
+    </span>
+
   </div>
   <div class="profile-details">
-    <h2 class="profile-name">User name</h2>
-    <p class="profile-headline">headline</p>
-    <p class="profile-location">user location</p>
-    <div class="profile-actions">
-      <button class="btn btn-primary">Connect</button>
-      <button class="btn btn-outline">Message</button>
+    <div class="profile-avatar-wrapper">
+      <img class="profile-avatar" [src]="avatarUrl | async" alt="User Avatar" />
     </div>
-  </div>
-  <div class="profile-about">
-    <h3>About</h3>
-    <p>user bio</p>
-  </div>
+    <span class="edit-button-wrapper">>
+      <app-choose-photo-button></app-choose-photo-button>
+    </span>
+    <div>
+      <h2 class="profile-name">{{ fullName | async}}</h2>
 
+      <p>{{ bio | async}}</p>
+    </div>
+
+    <span class="profile-actions">
+      <button mat-stroked-button (click)="onEdit()">Edit</button>
+      <button mat-flat-button>Message</button>
+    </span>
+  </div>
 </div>

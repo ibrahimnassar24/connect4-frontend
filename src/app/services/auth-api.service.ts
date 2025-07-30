@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ConfigsService } from './configs.service';
 import { HttpClient } from '@angular/common/http';
-import SignUserForm from '../helpers/signUserForm';
+import SignUserForm from '../state/helpers/signUserForm';
 
 @Injectable({
   providedIn: 'root'

@@ -8,8 +8,10 @@ import { NotificationMenuComponent } from './features/notification-menu/notifica
 import { TestComponent } from './features/test/test.component';
 import { PlayComponent } from './features/play/play.component';
 import { AuthComponent } from './features/auth/auth.component';
-import { ProfileEditComponent } from './components/profile-edit/profile-edit.component';
+import { ProfileEditComponent } from './components/dialogs/profile-edit/profile-edit.component';
 import { ProfileViewComponent } from './components/profile-view/profile-view.component';
+import { SearchResultsPageComponent } from './features/search-results-page/search-results-page.component';
+import { OthersProfileViewComponent } from './components/others-profile-view/others-profile-view.component';
 
 export const routes: Routes = [
     {
@@ -22,12 +24,12 @@ export const routes: Routes = [
         component: ProfileComponent,
         children: [
             {
-                path: "edit",
-                component: ProfileEditComponent
-            },
-            {
                 path: "view",
                 component: ProfileViewComponent
+            },
+            {
+                path: "view/:id",
+                component: OthersProfileViewComponent
             }
         ]
     },
@@ -52,6 +54,10 @@ export const routes: Routes = [
     {
         path: "play",
         component: PlayComponent
+    },
+    {
+        path: "searchresults",
+        component: SearchResultsPageComponent
     },
 
     {

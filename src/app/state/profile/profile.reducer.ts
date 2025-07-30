@@ -7,6 +7,7 @@ const intialValue: Profile = {
     lastName: null,
     email: null,
     avatarUrl: null,
+    coverUrl: null,
     createdAt: null,
     updatedAt: null,
     bio: null
@@ -31,17 +32,46 @@ export const profileReducer = createReducer(
                 ...intialValue
             };
         }
+    ),
+
+    on(
+        ProfileActions.createProfileSuccess,
+        (state, { profile }) => {
+            return {
+                ...state,
+                ...profile
+            };
+        }
+    ),
+
+    on(
+        ProfileActions.updateProfileSuccess,
+        ( state, { profile}) => {
+            return {
+                ...state,
+                ...profile
+            };
+        }
+    ),
+
+    on(
+        ProfileActions.updateAvatarSuccess,
+        (state, { url }) => {
+            return {
+                ...state,
+                avatarUrl: url
+            };
+        }
+    ),
+
+
+    on(
+        ProfileActions.updateCoverSuccess,
+        (state, { url }) => {
+            return {
+                ...state,
+                coverUrl: url
+            };
+        }
     )
-
-    // on(
-    //     ProfileActions.createProfileSuccess,
-    //     (state, profile) => {
-    //         return {
-    //             ...state,
-    //             ...profile
-    //         };
-    //     }
-    // ),
-
-    
 );

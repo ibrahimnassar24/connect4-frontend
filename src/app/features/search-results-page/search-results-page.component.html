@@ -1,0 +1,25 @@
+    <div class="search-box-container">
+        <app-search-box></app-search-box>
+    </div>
+    @if ( results | async; as items) {
+    <div class="container">
+        <ul>
+            <li *ngFor="let item of items">
+                <mat-card class="full-width">
+                    <div class="card-content" (click)="showProfile(item.email)">
+                        <div mat-card-avatar>
+                            <img [src]="item.avatarUrl" />
+                        </div>
+                        <mat-card-title>
+                            {{ item.firstName + ' ' + item.lastName}}
+                        </mat-card-title>
+                    </div>
+
+                    <button mat-button (click)="onInvite(item.email)">Invite</button>
+                </mat-card>
+            </li>
+        </ul>
+    </div>
+    } @else {
+    <p>no result found</p>
+    }

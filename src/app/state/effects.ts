@@ -4,6 +4,8 @@ import { StatusEffects } from "./status/status.effects";
 import { AppEffects } from "./app/app.effects";
 import { MatchEffects } from "./match/match.effects";
 import { NotificationEffects } from "./notification/notification.effects";
+import { SearchEffects } from "./search/search.effects.ts";
+import { DialogEffects } from "./dialog/dialog.effects";
 
 export const effects = [
     UserEffects,
@@ -11,5 +13,7 @@ export const effects = [
     StatusEffects,
     AppEffects,
     MatchEffects,
-    NotificationEffects
+    NotificationEffects,
+    SearchEffects,
+    DialogEffects
 ];

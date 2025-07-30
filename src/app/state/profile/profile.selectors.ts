@@ -31,6 +31,11 @@ export const selectAvatarUrl = createSelector(
     (state: Profile) => state.avatarUrl
 );
 
+export const selectCoverUrl = createSelector(
+    selectProfileState,
+    ( State ) => State.coverUrl
+);
+
 // Selector to get the createdAt date of the profile
 export const selectCreatedAt = createSelector(
     selectProfileState,
@@ -51,5 +56,5 @@ export const selectBio = createSelector(
 
 export const selectFullName = createSelector(
     selectProfileState,
-    (state) => state.firstName + " " + state.lastName
+    (state) => (state.firstName) ? state.firstName + " " + state.lastName : null
 );

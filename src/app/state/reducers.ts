@@ -5,11 +5,13 @@ import { profileReducer } from './profile/profile.reducer';
 import { statusReducer } from './status/status.reducer';
 import { notificationReducer } from './notification/notification.reducer';
 import { matchReducer } from './match/match.reducer';
+import { searchReducer } from './search/search.reducer';
 
 export const reducers: ActionReducerMap<any> = {
     user: userReducer,
     profile: profileReducer,
     status: statusReducer,
     notifications: notificationReducer,
-    match: matchReducer
+    match: matchReducer,
+    searchResults: searchReducer
 };

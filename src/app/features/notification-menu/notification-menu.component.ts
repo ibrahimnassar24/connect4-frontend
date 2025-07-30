@@ -26,7 +26,6 @@ constructor(
   this.notifications = this.store.select(selectNotifications);
 }
 
-onClick(link: string) {
-  // this.store.dispatch( acceptInvitation({ link }))
-}
+
+
 }

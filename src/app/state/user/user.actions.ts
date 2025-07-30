@@ -1,5 +1,5 @@
 import { createAction, props } from "@ngrx/store";
-import SignUserForm from "../../helpers/signUserForm";
+import SignUserForm from "../helpers/signUserForm";
 
 // Define the action types
 export const register = createAction(

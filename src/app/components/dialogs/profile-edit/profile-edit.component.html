@@ -1,5 +1,11 @@
 <mat-card class="container">
-  <mat-card-header class="title">Edit Your Profile</mat-card-header>
+  <mat-card-header class="title">
+  @if(data?.dialogType === "edit") {
+    Edit Your Profile
+  } @else { 
+    Create Profile
+  }
+  </mat-card-header>
   <form class="form" [formGroup]="form" (ngSubmit)="onSubmit()">
   <mat-form-field appearance="fill" class="full-width">
     <mat-label>First Name</mat-label>
@@ -13,18 +19,7 @@
     <mat-error *ngIf="form.get('lastName')?.hasError('required')">Last Name is required</mat-error>
   </mat-form-field>
 
-  <mat-form-field appearance="fill" class="full-width">
-    <mat-label>Email</mat-label>
-    <input matInput formControlName="email" type="email">
-    <mat-error *ngIf="form.get('email')?.hasError('required')">Email is required</mat-error>
-    <mat-error *ngIf="form.get('email')?.hasError('email')">Invalid email</mat-error>
-  </mat-form-field>
-
-  <mat-form-field appearance="fill" class="full-width">
-    <mat-label>Avatar URL</mat-label>
-    <input matInput formControlName="avatarUrl">
-  </mat-form-field>
-
+  
   <mat-form-field appearance="fill" class="full-width">
     <mat-label>bio</mat-label>
     <input matInput formControlName="bio">

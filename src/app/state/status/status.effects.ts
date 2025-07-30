@@ -2,12 +2,14 @@ import { inject, Injectable } from "@angular/core";
 import { createEffect, Actions, ofType } from "@ngrx/effects";
 import * as statusActions from "./status.actions";
 import { Router } from "@angular/router";
+import { UtilitiesService } from "../../services/utilities.service";
 import { from, map, mergeMap, catchError, switchMap } from "rxjs";
 
 @Injectable()
 export class StatusEffects {
     private actions$ = inject(Actions);
     router = inject(Router);
+    utilities = inject(UtilitiesService);
 
     navigateToHome$ = createEffect(() => {
 
@@ -106,18 +108,46 @@ export class StatusEffects {
     });
 
 
-    redirect$ = createEffect(() => {
-
+    goToSavedLocation$ = createEffect(() => {
         return this.actions$.pipe(
-            ofType(statusActions.redirect),
-            mergeMap((action) => {
-                return from(this.router.navigate(action.path)).pipe(
-                    catchError(error => [statusActions.navigateError({ error })])
-                );
-            })
+            ofType(statusActions.goToSavedLocation),
+            map(() => this.utilities.goToLocation()),
+            map( () => statusActions.goToSavedLocationSuccess()),
+            catchError(error => [statusActions.navigateError({ error })])
         );
-    },
-        { dispatch: false });
+
+    },);
+
+    navigateToSearchResults$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(statusActions.navigateToSearchResults),
+            mergeMap(() =>
+                from(this.router.navigate(["searchresults"]))
+                    .pipe(
+                        map(() => statusActions.navigateSuccess()),
+                        catchError(error => [statusActions.navigateError({ error: error })])
+                    )
+            )
+        )
+    );
+
+
+    navigateToOthersProfileView$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(statusActions.navigateToOthersProfileView),
+            map(action => this.router.navigate(["profile", "view", action.email])),
+            catchError(error => [statusActions.navigateError({ error: error })])
+        ),
+        { dispatch: false }
+    );
+
+    saveCurrentLocation$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(statusActions.saveCurrentLocation),
+            map(() => statusActions.saveCurrentLocationsuccess({ location: this.router.url })),
+            catchError(error => [statusActions.navigateError({ error })])
+        )
+    );
 
 
 }

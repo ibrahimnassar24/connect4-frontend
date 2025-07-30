@@ -1,0 +1,21 @@
+<div class="container">
+  <div class="profile-header">
+    <img class="profile-banner" [src]="coverUrl" alt="Profile Banner" />
+
+  </div>
+  <div class="profile-details">
+    <div class="profile-avatar-wrapper">
+      <img [src]="avatarUrl" alt="User Avatar" />
+    </div>
+    <div>
+      <h2 class="profile-name">{{ fullName}}</h2>
+
+      <p>{{ bio}}</p>
+    </div>
+
+    <span class="profile-actions">
+      <button mat-stroked-button (click)="onInvite()">invite to a game</button>
+      <!-- <button mat-flat-button>Message</button> -->
+    </span>
+  </div>
+</div>

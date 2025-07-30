@@ -1,33 +1,24 @@
-nav{
-    width: 100%;
-    height: 100%;
-    border:  1px solid black;
+nav {
+  width: 100%;
+  height: 100%;
 }
+
 .navbar {
-  height: 100%;  
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  background: #222;
-  color: #fff;
   padding: 0.75rem 2rem;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  box-shadow: var(--mat-sys-level1);
 }
 
-.navbar-logo {
-  font-size: 1.5rem;
-  font-weight: bold;
-  letter-spacing: 2px;
-  color: #ffca28;
-  text-decoration: none;
+ul.navbar-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
-ul.navbar-links{
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
 .navbar-links {
   display: flex;
   gap: 1.5rem;
@@ -38,29 +29,17 @@ ul.navbar-links{
   text-decoration: none;
   font-size: 1rem;
   transition: color 0.2s;
+
   &:hover {
     color: #ffca28;
   }
 }
 
-.navbar-header{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    margin-top: 1rem;
-}
-.navbar-user {
+.navbar-header {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-}
-
-.navbar-avatar {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid #ffca28;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 1rem;
 }
 

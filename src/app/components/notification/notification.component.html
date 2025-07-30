@@ -1,14 +1,14 @@
 <div class="container">
     <div class="message">
         <p class="message-content">
-            {{ data.Message }}
+            {{ data.payload?.msg }}
         </p>
     </div>
     <div class="actions">
-        <button mat-flat-button class="action-accept" (click)="onAccept()">
+        <button mat-flat-button class="action-accept" (click)="onAccept(data.payload?.invitationId)">
             accept
         </button>
-        <button mat-stroked-button class="action-decline" (click)="onDecline()">
+        <button mat-stroked-button class="action-decline" (click)="onDecline(data.payload?.invitationId)">
             decline
         </button>
     </div>

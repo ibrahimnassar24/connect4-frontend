@@ -1,7 +1,7 @@
 
 export interface Notification {
-    Id: string;
-    Type: string;
-    Message: string;
-    Link: string;
+    id: string;
+    type: string;
+    payload: any;
+    createdAt: Date;
 };

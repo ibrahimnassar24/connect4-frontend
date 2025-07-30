@@ -1,17 +1,20 @@
 import { inject, Injectable } from "@angular/core";
+import { Store } from "@ngrx/store";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { AuthApiService } from "../../services/auth-api.service";
-import { catchError, map, switchMap, mergeMap } from "rxjs/operators";
-import { Action } from "@ngrx/store";
+import { catchError, map, switchMap, mergeMap, withLatestFrom } from "rxjs/operators";
 import * as userActions from "./user.actions";
 import * as profileactions from "../profile/profile.actions";
 import * as notificationActions from "../notification/notification.actions";
 import * as statusActions from '../status/status.actions';
+import { openAuthenticationErrorDialog, openCongratulationsDialog, openCreateProfileDialog } from "../dialog/dialog.actions";
+import { selectCurrentLocation } from "../status/status.selectors";
 
 @Injectable()
 export class UserEffects {
     private actions$: Actions = inject(Actions);
     private authApiService: AuthApiService = inject(AuthApiService);
+    private store = inject(Store);
 
     register$ = createEffect(() => {
 
@@ -21,7 +24,7 @@ export class UserEffects {
                 this.authApiService.register(action).pipe(
                     switchMap(() => [
                         userActions.registerSuccess({ email: action.email }),
-                        statusActions.navigateToProfileEdit()
+                        openCongratulationsDialog()
                     ]),
                     catchError(error => [userActions.authError({ error: error.message })])
                 )
@@ -40,7 +43,13 @@ export class UserEffects {
                     switchMap(response => [
                         userActions.logInSuccess({ email: action.email })
                     ]),
-                    catchError(error => [userActions.authError({ error: error.message })])
+                    catchError(error => {
+                        if( error.status === 401) {
+                            return [openAuthenticationErrorDialog()];
+                        } else {
+                            return [userActions.authError({ error: error.message })]
+                        }
+                    })
                 )
             )
         )
@@ -51,10 +60,12 @@ export class UserEffects {
     loginSuccess$ = createEffect(() =>
         this.actions$.pipe(
             ofType(userActions.logInSuccess),
-            switchMap(({ email }) => [
+            withLatestFrom(this.store.select(selectCurrentLocation)),
+            switchMap(([{ email }, location]) => [
+                statusActions.login(),
                 profileactions.loadProfile({ email }),
                 notificationActions.listenForNotifications(),
-                // statusActions.navigateToHome()
+                statusActions.goToSavedLocation()
             ]),
         )
 
@@ -69,6 +80,7 @@ export class UserEffects {
             mergeMap(() =>
                 this.authApiService.logout().pipe(
                     mergeMap(() => [
+                        statusActions.logOut(),
                         profileactions.clearProfile(),
                         statusActions.navigateToLogin(),
                         userActions.logOutSuccess()

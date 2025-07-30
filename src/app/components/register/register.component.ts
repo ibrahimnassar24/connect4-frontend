@@ -8,7 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
 import { Store } from '@ngrx/store';
 import * as userActions from "../../state/user/user.actions";
-import SignUserForm from '../../helpers/signUserForm';
+import SignUserForm from '../../state/helpers/signUserForm';
 import { navigateToLogin } from '../../state/status/status.actions';
 
 @Component({

@@ -4,6 +4,7 @@ interface Profile {
     lastName: string | null;
     email: string | null; // Email is required for identification
     avatarUrl: string | null;
+    coverUrl: string | null;
     createdAt: Date | null; // Date when the profile was created
     updatedAt: Date | null; 
     bio: string | null;

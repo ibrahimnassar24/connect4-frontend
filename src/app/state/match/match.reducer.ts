@@ -9,6 +9,7 @@ const initialValue: Match = {
     firstPlayer: null,
     secondPlayer: null,
     winner: null,
+    invitationId: null,
     status: "PENDING",
     createdAt: null,
     updatedAt: null
@@ -44,28 +45,16 @@ export const matchReducer = createReducer(
     ),
 
     on(
-        matchActions.waitingFroResponse,
-        ( state, { match }) => {
+        matchActions.invitationSubmitted,
+        (state, { invitationId }) => {
             return {
                 ...state,
-                ...match
+                invitationId
             };
         }
     ),
 
 
-    on(
-        matchActions.matchFinished,
-        (state, { winner }): Match => {
-            return {
-                ...state,
-                winner,
-                status: "FINISHED"
-            };
-        }
-    ),
-
-    
     on(
         matchActions.changeTurn,
         (state, { turn }) => {

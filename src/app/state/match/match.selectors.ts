@@ -51,3 +51,8 @@ export const selectGrid = createSelector(
   selectMatchState,
   ( state )  => state.grid
 );
+
+export const selectInvitationId = createSelector(
+    selectMatchState,
+    ( state ) => state.invitationId
+);

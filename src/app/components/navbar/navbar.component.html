@@ -1,29 +1,11 @@
 <nav>
     <div class="navbar">
         <div class="navbar-header">
-            <span class="navbar-logo">
-                Connect4
-            </span>
-            @if( email | async) {
-            <div class="navbar-user">
-                <div class="navbar-avatar">
-
-                </div>
-                <span class="hide-on-md">
-                    {{ fullName | async}}
-                </span>
-                <button mat-button class="navbar-logout" (click)="onLogout()">
-                    Logout
-                </button>
-            </div>
-            }
+            <app-logo-box></app-logo-box>
+            <app-user-box></app-user-box>
+            <app-change-mode-button></app-change-mode-button>
+            <app-notifications-icon-button></app-notifications-icon-button>
         </div>
-        <ul class="navbar-links">
-            @for (link of links; track $index) {
-            <li class="nav-link-wrapper">
-                <a class="navbar-link" [routerLink]="link">{{ link }}</a>
-            </li>
-            }
-        </ul>
+
     </div>
 </nav>

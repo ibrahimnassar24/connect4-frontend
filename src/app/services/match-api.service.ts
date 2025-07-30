@@ -4,6 +4,7 @@ import { ConfigsService } from './configs.service';
 import { Match } from '../state/match/match.model';
 import Movement from '../state/helpers/movement';
 import { HubApiService } from './hub-api.service';
+import { invitationSubmitted } from '../state/match/match.actions';
 
 @Injectable({
   providedIn: 'root'
@@ -32,10 +33,20 @@ export class MatchApiService {
     return res;
   }
 
+  createInvitation(email: string) {
+    const url = this.url + "invite";
+    return this.http.post<{ invitationId: string }>(
+      url,
+      { email: email },
+      { withCredentials: true }
+    );
+  }
+
   acceptInvitation(id: string) {
     const url = this.url + 'accept/' + id;
-    return this.http.get<Match>(
+    return this.http.put<Match>(
       url,
+      {},
       { withCredentials: true }
     );
   }
@@ -48,8 +59,16 @@ export class MatchApiService {
     );
   }
 
+  withdrawInvitation(id: string) {
+    const url = this.url + "withdraw/" + id;
+    return this.http.delete(
+      url,
+      { withCredentials: true }
+    ).subscribe( r => console.log(r))
+  }
+
   sendMovement(movement: Movement) {
-return this.hub.sendMovement(movement);
+    return this.hub.sendMovement(movement);
   }
 
 
