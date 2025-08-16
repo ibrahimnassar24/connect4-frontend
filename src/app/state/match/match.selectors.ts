@@ -5,7 +5,7 @@ import { Match } from './match.model';
 export const selectMatchState = createFeatureSelector<Match>('match');
 
 // Selector to get the match by ID
-export const selectId = createSelector(
+export const selectMatchId = createSelector(
     selectMatchState,
     (state: Match) => state.id
 );

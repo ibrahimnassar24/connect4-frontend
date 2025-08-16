@@ -32,8 +32,7 @@ export class UtilitiesService {
 
   registerTimer(invitationId: string) {
     const action = () => this.store.dispatch(withdrawInvitation({ invitationId}))
-    console.log(invitationId)
-    this.timerId = setTimeout(action, 3000);
+    this.timerId = setTimeout(action, 5*60*1000);
   }
 
   clearTimer() {

@@ -8,9 +8,10 @@ export const createMatch = createAction(
 );
 
 
-export const matchStarted = createAction(
-    "[Match] Match Started",
-    props<{ match: Match }>()
+
+export const createInvitation = createAction(
+    "[Match] Create Invitation",
+    props<{ email: string }>()
 );
 
 export const invitationSubmitted = createAction(
@@ -26,14 +27,10 @@ export const stopInvitationResponseTimer = createAction(
     "[Match] Stop Invitation Response Timer"
 );
 
-export const createInvitation = createAction(
-    "[Match] Create Invitation",
-    props<{ email: string }>()
-);
 
 export const withdrawInvitation = createAction(
     "[Match] Withdraw Invitation",
-    props<{ invitationId: string}>()
+    props<{ invitationId: string }>()
 )
 
 export const acceptInvitation = createAction(
@@ -44,6 +41,36 @@ export const acceptInvitation = createAction(
 export const declineInvitation = createAction(
     "[Match] Decline Invitation",
     props<{ id: string }>()
+);
+
+export const invitationDeclined = createAction(
+    "[Match] Invitation Declined"
+);
+
+export const listenForInvitationNotifications = createAction(
+    "[Match] Listen For Invitation Notifications"
+);
+
+export const stopListeningForInvitationNotifications = createAction(
+    "[Match] Stop Listening For Invitation Notifications"
+);
+
+export const joinMatch = createAction(
+    "[Match] Join Match",
+    props<{ matchId: string }>()
+);
+
+export const matchStarted = createAction(
+    "[Match] Match Started",
+    props<{ match: Match }>()
+);
+
+export const listenForMatchNotifications = createAction(
+    "[Match] Listen For Match Notifications"
+);
+
+export const stopListeningForMatchNotification = createAction(
+    "[Match} Stop Listening For Match Notifications"
 );
 
 export const matchFinished = createAction(
@@ -62,6 +89,10 @@ export const matchLost = createAction(
 
 export const matchWon = createAction(
     "[Match] Match Won",
+);
+
+export const matchForfitted = createAction(
+    "[Match] Match Forfitted"
 );
 
 
@@ -85,6 +116,11 @@ export const receiveMovement = createAction(
 export const matchError = createAction(
     "[Match] Match Error",
     props<{ msg: string }>()
+);
+
+export const matchWarning = createAction(
+    "[Match] Match Warning",
+    props<{ msg: string}>()
 );
 
 export const reset = createAction(

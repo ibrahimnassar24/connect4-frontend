@@ -44,7 +44,7 @@ export class MatchApiService {
 
   acceptInvitation(id: string) {
     const url = this.url + 'accept/' + id;
-    return this.http.put<Match>(
+    return this.http.put<{ matchId: string }>(
       url,
       {},
       { withCredentials: true }
@@ -64,11 +64,31 @@ export class MatchApiService {
     return this.http.delete(
       url,
       { withCredentials: true }
-    ).subscribe( r => console.log(r))
+    );
+  }
+
+  joinMatch(matchId: string) {
+    this.hub.joinMatch(matchId);
   }
 
   sendMovement(movement: Movement) {
     return this.hub.sendMovement(movement);
+  }
+
+  listenForNotifications() {
+    this.hub.listenForMatchNotifications();
+  }
+
+  stopListeningForNotification() {
+    this.hub.stopListeningForMatchNotifications();
+  }
+
+  listenForInvitationNotification() {
+    this.hub.listenForInvitationNotifications();
+  }
+
+  stopListenForInvitationNotification() {
+    this.hub.stopListeningForInvitationNotification();
   }
 
 

@@ -1,5 +1,3 @@
-<button mat-flat-button (click)="onToggleMode()">
-                @if( darkMode | async) {
-                Light Mode
-                } @else { Dark Mode}
+<button mat-mini-fab (click)="onToggleMode()" [attr.aria-label]="( darkMode | async) ? 'activate light mode' : 'activate dark mode'">
+    <mat-icon>lightbulb</mat-icon>
             </button>

@@ -1,0 +1,23 @@
+<button [mat-menu-trigger-for]="menu" class="avatar-wrapper">
+    <img [src]="avatarUrl | async" [attr.aria-label]="fullName | async">
+</button>
+
+<mat-menu #menu>
+    <div mat-menu-item>
+        <div class="item-container" (click)="onViewProfile()">
+            <div class="avatar-wrapper">
+                <img [src]="avatarUrl | async" [attr.aria-label]="fullName | async">
+            </div>
+            <div class="text-wrapper">
+                <span>{{ fullName | async}}</span>
+                <span>{{ email$ | async}}</span>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div mat-menu-item>
+        <button mat-flat-button class="logout-button" (click)="onLogout()">Log out</button>
+    </div>
+</mat-menu>

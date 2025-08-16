@@ -2,9 +2,15 @@
     <div class="navbar">
         <div class="navbar-header">
             <app-logo-box></app-logo-box>
-            <app-user-box></app-user-box>
-            <app-change-mode-button></app-change-mode-button>
-            <app-notifications-icon-button></app-notifications-icon-button>
+
+            <app-authentication-box>
+                <div class="navbar-actions">
+                    <app-change-mode-button></app-change-mode-button>
+                    <app-notifications-icon-button></app-notifications-icon-button>
+                    <app-user-button></app-user-button>
+
+                </div>
+            </app-authentication-box>
         </div>
 
     </div>

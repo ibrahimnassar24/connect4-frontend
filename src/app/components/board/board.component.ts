@@ -27,15 +27,15 @@ export class BoardComponent {
   ) {
     this.grid = this.store.select(matchSelectors.selectGrid);
     this.player = this.store.select( selectEmail);
-    this.matchId = this.store.select(matchSelectors.selectId);
+    this.matchId = this.store.select(matchSelectors.selectMatchId);
     this.winner = this.store.select(matchSelectors.selectWinner);
   }
 
   onClick(c: number) {
     let player = "";
     this.player.subscribe( v => player = v!);
-    let matchId = 0;
-    this.matchId.subscribe(v => matchId = numberAttribute(v))
+    let matchId = "";
+    this.matchId.subscribe(v => matchId = v!)
     const movement: Movement = {
       matchId,
       player,

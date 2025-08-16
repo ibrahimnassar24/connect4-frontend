@@ -1,6 +1,6 @@
 
 interface Movement {
-    matchId: number;
+    matchId: string;
     player: string;
     format: string;
     column: number;

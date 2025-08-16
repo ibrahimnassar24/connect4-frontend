@@ -1,3 +1,7 @@
-<ng-container *ngIf="( matchId | async)">
-<app-board></app-board>
-</ng-container>
+@if ( matchId | async) {
+
+    <app-board></app-board>
+}
+@else {
+    <app-loading></app-loading>
+}

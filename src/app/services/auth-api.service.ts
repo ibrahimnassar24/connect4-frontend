@@ -35,13 +35,19 @@ export class AuthApiService {
 
   }
 
-checkLogin() {
-  return this.httpClient.get<{email: string}>(
-    this.url + "manage/info",
-    {withCredentials: true}
+  checkLogin() {
+    return this.httpClient.get<{ email: string }>(
+      this.url + "manage/info",
+      { withCredentials: true }
 
-  );
-}
+    );
+  }
+
+  loginWithGoogle() {
+    const url = this.url + "api/auth-google/login";
+
+    window.location.href = url;
+  }
 
   logout() {
     return this.httpClient.post(

@@ -32,6 +32,17 @@ export const matchReducer = createReducer(
     ),
 
 
+    on(
+        matchActions.joinMatch,
+        ( state, { matchId} ) => {
+            return {
+                ...state,
+                id: matchId
+            };
+        }
+    ),
+
+
 
     on(
         matchActions.matchStarted,

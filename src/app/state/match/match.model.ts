@@ -6,7 +6,7 @@ export interface Match {
     firstPlayer?: string | null;
     secondPlayer?: string | null;
     winner: string | null;
-    invitation: Invitation | null;
+    invitationId: string | null;
     status?: 'PENDING' | 'ONGOING' | 'FINISHED'; // Current status of the match
     createdAt?: Date | null;
     updatedAt?: Date | null;

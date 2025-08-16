@@ -38,7 +38,7 @@ export class Grid {
             ...this.grid!
         ];
         const c = movement.column;
-        const r = temp[movement.column].lastIndexOf(null);
+        const r = temp[movement.column].indexOf(null);
         temp[c] = [...temp[c]];
         temp[c][r] = movement;
         this.grid = temp;

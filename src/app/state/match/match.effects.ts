@@ -3,6 +3,7 @@ import { createEffect, Actions, ofType } from "@ngrx/effects";
 import { Store } from "@ngrx/store";
 import * as MatchActions from "./match.actions";
 import * as statusActions from "../status/status.actions";
+import * as dialogActions from "../dialog/dialog.actions";
 import { map, mergeMap, catchError, from, EMPTY, of, tap, withLatestFrom, switchMap } from "rxjs";
 import { MatchApiService } from "../../services/match-api.service";
 import { DialogApiService } from "../../services/dialog-api.service";
@@ -16,7 +17,7 @@ export class MatchEffects {
     private api = inject(MatchApiService);
     private dialogApi = inject(DialogApiService);
     private utls = inject(UtilitiesService);
-    private store = inject(Store);
+
 
 
     createInvitation$ = createEffect(() =>
@@ -26,6 +27,8 @@ export class MatchEffects {
                 this.api.createInvitation(action.email).pipe(
                     switchMap(res => [
                         MatchActions.invitationSubmitted({ invitationId: res.invitationId }),
+                        statusActions.navigateToPlay(),
+                        MatchActions.listenForInvitationNotifications(),
                         MatchActions.startInvitationResponseTimer()
                     ])
                 )
@@ -36,7 +39,7 @@ export class MatchEffects {
     startInvitationResponseTimer$ = createEffect(() =>
         this.actions$.pipe(
             ofType(MatchActions.startInvitationResponseTimer),
-            withLatestFrom(this.store.select(selectInvitationId)),
+            withLatestFrom(this.store$.select(selectInvitationId)),
             tap(([action, invitationId]) => this.utls.registerTimer(invitationId!))
         ),
         { dispatch: false }
@@ -50,15 +53,31 @@ export class MatchEffects {
         { dispatch: false }
     );
 
+    invitationDeclined$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(MatchActions.invitationDeclined),
+            switchMap(() => [
+                MatchActions.stopListeningForInvitationNotifications(),
+                MatchActions.reset(),
+                statusActions.navigateToHome()
+            ])
+        )
+    );
+
     withdrawInvitation$ = createEffect(() =>
         this.actions$.pipe(
             ofType(MatchActions.withdrawInvitation),
-            tap(action => {
-                console.log(action.invitationId)
+            mergeMap(action =>
                 this.api.withdrawInvitation(action.invitationId)
-            })
-        ),
-        { dispatch: false}
+                    .pipe(
+                        mergeMap(() => [
+                            MatchActions.stopListeningForInvitationNotifications(),
+                            statusActions.navigateToHome()
+                        ])
+                    )
+            )
+
+        )
     );
 
 
@@ -67,7 +86,7 @@ export class MatchEffects {
             ofType(MatchActions.acceptInvitation),
             mergeMap((action) =>
                 this.api.acceptInvitation(action.id).pipe(
-                    map(match => MatchActions.matchStarted({ match })),
+                    map(({ matchId }) => MatchActions.joinMatch({ matchId })),
                     catchError(e => [MatchActions.matchError({ msg: e })])
                 )
             )
@@ -75,29 +94,71 @@ export class MatchEffects {
     );
 
 
-    matchStarted$ = createEffect(() =>
+    joinMatch$ = createEffect(() =>
         this.actions$.pipe(
-            ofType(MatchActions.matchStarted),
-            map(() => statusActions.navigateToPlay())
+            ofType(MatchActions.joinMatch),
+            switchMap(({ matchId }) => {
+                this.api.joinMatch(matchId);
+                return [
+                    MatchActions.listenForMatchNotifications(),
+                    MatchActions.stopListeningForInvitationNotifications(),
+                    MatchActions.stopInvitationResponseTimer(),
+                    statusActions.navigateToPlay()
+
+                ];
+            })
         )
     );
 
 
+
+    listenForMatchNotifications$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(MatchActions.listenForMatchNotifications),
+            tap(() => this.api.listenForNotifications())
+        ),
+        { dispatch: false }
+    );
+
+
+    stopListeningForMatchNotifications$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(MatchActions.stopListeningForMatchNotification),
+            tap(() => this.api.stopListeningForNotification())
+        ),
+        { dispatch: false }
+    );
+
     matchWon$ = createEffect(() =>
         this.actions$.pipe(
             ofType(MatchActions.matchWon),
-            tap(() => this.dialogApi.showMatchWonDialog())
+            mergeMap(() => [
+                MatchActions.stopListeningForMatchNotification(),
+                dialogActions.openMatchWonDialog()
+            ])
         ),
-        { dispatch: false }
+    );
+
+    matchForfitted$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(MatchActions.matchForfitted),
+            switchMap(() => [
+                MatchActions.stopListeningForMatchNotification(),
+                dialogActions.openMatchForfittedDialog()
+            ])
+        )
     );
 
 
     matchLost$ = createEffect(() =>
         this.actions$.pipe(
             ofType(MatchActions.matchLost),
-            tap(() => MatchActions.matchFinished())
+            mergeMap(() => [
+                MatchActions.stopListeningForMatchNotification(),
+                dialogActions.openMatchLostDialog()
+            ])
+
         ),
-        { dispatch: false }
     );
 
 
@@ -109,6 +170,24 @@ export class MatchEffects {
                 statusActions.navigateToHome()
             ])
         )
+    );
+
+
+    listenForInvitationNotification$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(MatchActions.listenForInvitationNotifications),
+            tap(() => this.api.listenForInvitationNotification())
+        ),
+        { dispatch: false }
+    );
+
+    stopListeningForInvitationNotification$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(MatchActions.stopListeningForInvitationNotifications),
+            tap((() => this.api.stopListenForInvitationNotification())
+            )
+        ),
+        { dispatch: false }
     );
 
 
@@ -129,7 +208,7 @@ export class MatchEffects {
     sendMovement$ = createEffect(() =>
         this.actions$.pipe(
             ofType(MatchActions.sendMovement),
-            map(action => this.api.sendMovement(action.movement)),
+            tap(action => this.api.sendMovement(action.movement)),
             catchError(error => [MatchActions.matchError({ msg: error })])
         ),
         { dispatch: false }
@@ -141,5 +220,22 @@ export class MatchEffects {
             map(action => MatchActions.addMovement(action.movement)),
             catchError(error => [MatchActions.matchError({ msg: error })])
         )
+    );
+
+    matchError$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(MatchActions.matchError),
+            tap(action => console.log(action.msg))
+        ),
+        { dispatch: false }
+    );
+
+
+    matchWarning$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(MatchActions.matchWarning),
+            tap(action => console.log(action.msg))
+        ),
+        { dispatch: false }
     );
 }

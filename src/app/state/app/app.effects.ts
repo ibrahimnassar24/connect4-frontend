@@ -22,7 +22,7 @@ export class AppEffects {
             withLatestFrom(this.store),
             tap(([action, state]) => {
                 console.log(action.type)
-                // console.log(state.status.currentLocation)
+                console.log(state.match.turn)
             })
         );
     }, { dispatch: false });

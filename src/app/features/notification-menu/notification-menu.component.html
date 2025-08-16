@@ -1,7 +1,9 @@
-    <div class="container">
-        <ul>
-            <li *ngFor="let notification of ( notifications | async)">
-                <app-notification [data]="notification"></app-notification>
-            </li>
-        </ul>
-    </div>
+<div class="container">
+    <ul>
+        @for (notification of ( notifications | async); track notification.id) {
+        <li>
+            <app-notification [data]="notification"></app-notification>
+        </li>
+        }
+    </ul>
+</div>

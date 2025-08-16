@@ -2,13 +2,14 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import {MatCardModule} from '@angular/material/card';
+import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { Store } from '@ngrx/store';
 import * as userActions from '../../state/user/user.actions';
 import { navigateToRegister } from '../../state/status/status.actions';
+import { AuthApiService } from '../../services/auth-api.service';
 
 @Component({
   selector: 'app-login',
@@ -28,7 +29,8 @@ export class LoginComponent {
   form: FormGroup;
   constructor(
     private formBuilder: FormBuilder,
-    private store: Store
+    private store: Store,
+    private auth: AuthApiService
   ) {
     this.form = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
@@ -54,6 +56,10 @@ export class LoginComponent {
         }
       });
     }
+  }
+
+  onLoginWithGoogle() {
+    this.auth.loginWithGoogle();
   }
 
   onRegister() {

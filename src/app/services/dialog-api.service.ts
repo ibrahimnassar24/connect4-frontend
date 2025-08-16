@@ -73,6 +73,18 @@ export class DialogApiService {
     );
   }
 
+  showMatchForfittedDialog() {
+    this.dialog.open(MessageDialogComponent,
+      {
+        data: {
+          title: "Lucky for you",
+          content: "The other player has forfitted the match.",
+          action: (() => this.store.dispatch(matchFinished())).bind(this)
+        }
+      }
+    );
+  }
+
   showErrorDialog(msg: string) {
     this.dialog.open(ErrorDialogComponent, {
       data: { msg }

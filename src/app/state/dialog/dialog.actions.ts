@@ -23,3 +23,15 @@ export const openCongratulationsDialog = createAction(
 export const openAuthenticationErrorDialog = createAction(
     "[Dialog] Open Authentication Error Dialog"
 );
+
+export const openMatchWonDialog = createAction(
+    "[Dialog] Open Match Won Dialog"
+);;
+
+export const openMatchLostDialog = createAction(
+    "[Dialog] Open Match Lost Dialog"
+);
+
+export const openMatchForfittedDialog = createAction(
+    "[Dialog] Open Match Forfitted Dialog"
+);

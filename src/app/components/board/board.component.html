@@ -1,20 +1,15 @@
-<div class="grid">
-    <ng-container
-    *ngIf="grid | async as columns">
-    <div *ngFor="let column of columns; let i = index" class="column" (click)="onClick(i)">
-        <div 
-        *ngFor="let disc of column" 
-        [ngClass]="(disc === null) ? 'holder' : disc.format"
-        ></div>
-    </div>
-    </ng-container>
-</div>
 
-<div *ngIf="winner | async">
-    @if (((winner | async) === (player | async))) {
-        <h1>Congratulation|</h1>
-    }
-    @else {
-        <h1>Game Over!</h1>
+<div class="grid">>
+    @if (grid | async; as columns) {
+        @for (column of columns; track $index; let c = $index) {
+            <div class="column" [id]="'column' + c" (click)="onClick(c)">
+                @for (disc of column; track $index) {
+                    <div [ngClass]="(disc === null) ? 'holder' : disc.format">
+
+                    </div>
+                }
+            </div>
+        }
+
     }
 </div>

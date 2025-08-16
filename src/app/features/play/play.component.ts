@@ -18,11 +18,13 @@ import { Observable } from 'rxjs';
 })
 export class PlayComponent {
   matchId: Observable<string | null>;
+  invitationId: Observable<string | null>;
 
   constructor(
     private store: Store
   ) {
-    this.matchId = this.store.select(matchSelectors.selectId);
+    this.matchId = this.store.select(matchSelectors.selectMatchId);
+    this.invitationId = this.store.select(matchSelectors.selectInvitationId);
   }
 
 

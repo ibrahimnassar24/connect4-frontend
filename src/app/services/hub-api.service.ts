@@ -8,7 +8,8 @@ import { Match } from '../state/match/match.model';
 import * as matchActions from '../state/match/match.actions';
 import Movement from '../state/helpers/movement';
 import { from } from 'rxjs';
-import { selectInvitationId } from '../state/match/match.selectors';
+import { selectInvitationId, selectMatchId } from '../state/match/match.selectors';
+import { Notification } from '../state/notification/notification.model';
 
 @Injectable({
   providedIn: 'root'
@@ -34,41 +35,93 @@ export class HubApiService {
       this.store.dispatch(notificationActions.notificationReceived({ notification }))
     });
 
-    this.hub.on("match", (data) => {
-      const match: Match = JSON.parse(data);
-
-      this.store.select(selectInvitationId)
-        .subscribe(invitationId => {
-          if (match.invitationId === invitationId)
-            this.store.dispatch(matchActions.matchStarted({ match }));
-        })
-    });
-
-    this.hub.on("cancel", (invitationId) => {
-      this.store.select(selectInvitationId)
-        .subscribe(id => {
-          if (invitationId === id)
-            this.store.dispatch(matchActions.reset());
-        })
-    })
-
-    this.hub.on("movement", (data) => {
-      const movement: Movement = JSON.parse(data);
-      this.store.dispatch(matchActions.receiveMovement({ movement }));
-    });
-
-    this.hub.on("changeTurn", (turn) => {
-      this.store.dispatch(matchActions.changeTurn({ turn }));
-    });
-
-    this.hub.on("gameWon", (winner => {
-      this.store.dispatch(matchActions.matchWon())
-    }))
-
-    this.hub.on("gameOver", () => {
-      this.store.dispatch(matchActions.matchLost());
-    })
     return this.hub.start();
+  }
+
+
+  listenForInvitationNotifications() {
+    this.hub.on("invitation", (invitationId, data) => {
+      let currentInvitationId = "";
+      this.store.select(selectInvitationId)
+        .subscribe(id => currentInvitationId = id!);
+
+      if (currentInvitationId != invitationId) return;
+
+      const notification: Notification = JSON.parse(data);
+      switch (notification.type) {
+        case "invitationAccepted": {
+          const match: { matchId: string } = JSON.parse(notification.payload);
+          this.store.dispatch(matchActions.joinMatch({ matchId: match.matchId }));
+          break;
+        }
+        case "invitationDeclined": {
+          this.store.dispatch(matchActions.invitationDeclined());
+        }
+      }
+    })
+  }
+
+  stopListeningForInvitationNotification() {
+    this.hub.off("invitation");
+  }
+
+  listenForMatchNotifications() {
+    this.hub.on("match", (matchId, data) => {
+      let currentMatchId = "";
+      this.store.select(selectMatchId)
+        .subscribe(id => currentMatchId = id!);
+
+      if (matchId != currentMatchId) return;
+      const notification: Notification = JSON.parse(data);
+
+      switch (notification.type) {
+        case "startMatch": {
+          const match: Match = JSON.parse(notification.payload);
+          this.store.dispatch(matchActions.matchStarted({ match }))
+          break;
+        }
+        case "addMovement": {
+          const payload: Movement = JSON.parse(notification.payload);
+          this.store.dispatch(matchActions.receiveMovement({ movement: payload }));
+          break;
+        }
+        case "switchTurn": {
+          const payload = JSON.parse(notification.payload);
+          this.store.dispatch(matchActions.changeTurn({ turn: payload.turn }));
+          break;
+        }
+        case "matchWon": {
+          this.store.dispatch(matchActions.matchWon());
+          break;
+        }
+        case "matchForfitted": {
+          this.store.dispatch(matchActions.matchForfitted());
+          break;
+        }
+        case "matchLost": {
+          this.store.dispatch(matchActions.matchLost());
+          break;
+        }
+        case "matchError": {
+          const payload: { msg: string } = JSON.parse(notification.payload);
+          this.store.dispatch(matchActions.matchError({ msg: payload.msg }));
+          break;
+        }
+        case "matchWarning": {
+          const payload: { msg: string } = JSON.parse(notification.payload);
+          this.store.dispatch(matchActions.matchWarning({ msg: payload.msg }));
+        }
+
+      }
+    })
+  }
+
+  stopListeningForMatchNotifications() {
+    this.hub.off("match");
+  }
+
+  joinMatch(matchId: string) {
+    this.hub.send("JoinMatch", matchId);
   }
 
   sendMovement(movement: Movement): Promise<void> {
